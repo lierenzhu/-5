@@ -81,38 +81,76 @@ int LocateVex(vexnode G[],char u)
 
 void createorlist(vexnode G[])
 {
-	int i, j, n;
+	int i, j, n,isFromFile;
 	arcnode *p;
 	char ch, u, v;
 	i = n = 0;
-	printf("请输入节点，以#结束：");
-	ch = getchar();
+	printf("请选择输入方式：1.文件输入；2.键盘输入\n");
+	scanf("%d", &isFromFile);
 	getchar();
-	while (ch!='#')
+	if (isFromFile == 2)
 	{
-		n++;
-		G[i].data = ch;
-		G[i].fin = G[i].fout = NULL;
-		i++;
-		ch = getchar(); 
+		printf("请输入节点，以#结束：");
+		ch = getchar();
 		getchar();
-	}
-	printf("\n请输入弧，以##结束：");
-	scanf("%c%c", &u, &v);
-	getchar();
-	while (u!='#')
-	{
-		i = LocateVex(G, u);
-		j = LocateVex(G, v);
-		p = (arcnode*)malloc(sizeof(arcnode));
-		p->tail = i;
-		p->head = j;
-		p->hlink = G[j].fin;
-		G[j].fin = p;
-		p->tlink = G[i].fout;
-		G[i].fout = p;
+		while (ch != '#')
+		{
+			n++;
+			G[i].data = ch;
+			G[i].fin = G[i].fout = NULL;
+			i++;
+			ch = getchar();
+			getchar();
+		}
+		printf("\n请输入弧，以##结束：");
 		scanf("%c%c", &u, &v);
 		getchar();
+		while (u != '#')
+		{
+			i = LocateVex(G, u);
+			j = LocateVex(G, v);
+			p = (arcnode*)malloc(sizeof(arcnode));
+			p->tail = i;
+			p->head = j;
+			p->hlink = G[j].fin;
+			G[j].fin = p;
+			p->tlink = G[i].fout;
+			G[i].fout = p;
+			scanf("%c%c", &u, &v);
+			getchar();
+		}
+	}
+	else
+	{
+		FILE *fpRead = fopen("data.txt", "r");
+		if (fpRead == NULL)
+		{
+			printf("文件不存在……");
+		}
+		fscanf(fpRead, "%c", &ch);
+		while (ch != '#')
+		{
+			n++;
+			G[i].data = ch;
+			G[i].fin = G[i].fout = NULL;
+			i++;
+			fscanf(fpRead, "%c", &ch);
+		}
+		fscanf(fpRead,"%c%c", &u, &v);
+		while (u != '#')
+		{
+			i = LocateVex(G, u);
+			j = LocateVex(G, v);
+			p = (arcnode*)malloc(sizeof(arcnode));
+			p->tail = i;
+			p->head = j;
+			p->hlink = G[j].fin;
+			G[j].fin = p;
+			p->tlink = G[i].fout;
+			G[i].fout = p;
+			fscanf(fpRead, "%c%c", &u, &v);
+		}
+
 	}
 }
 
