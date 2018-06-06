@@ -130,12 +130,13 @@ void createorlist(vexnode G[])
 		fscanf(fpRead, "%c", &ch);
 		while (ch != '#')
 		{
-			n++;
-			G[i].data = ch;
-			G[i].fin = G[i].fout = NULL;
-			i++;
+				n++;
+				G[i].data = ch;
+				G[i].fin = G[i].fout = NULL;
+				i++;
 			fscanf(fpRead, "%c", &ch);
 		}
+		
 		fscanf(fpRead,"%c%c", &u, &v);
 		while (u != '#')
 		{
